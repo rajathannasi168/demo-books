@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.books.demo.domain.Book;
 import com.books.demo.exception.ResourceNotFoundException;
 import com.books.demo.repository.BookRepository;
-import com.fasterxml.jackson.core.JsonParser;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -38,7 +36,7 @@ public class BookResource implements ErrorController {
 	/**
 	 * @param bookRepository
 	 */
-	//@Autowired
+	// @Autowired
 	public BookResource(BookRepository bookRepository) {
 		this.bookRepository = bookRepository;
 	}
@@ -63,30 +61,37 @@ public class BookResource implements ErrorController {
 
 	/**
 	 * @param id
-	 * @return 
+	 * @return
 	 * @return
 	 */
+//	@PutMapping(value = "/updateBook/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//	public Mono<Book> findById(@PathVariable Integer id, @RequestBody Book book) throws ResourceNotFoundException {
+//		return this.bookRepository.findById(id).map(lBook -> {
+////			lBook.setTitle(book.getTitle());
+////			lBook.setCoverPhotoURL(book.getCoverPhotoURL());
+////			lBook.setIsbnNumber(book.getIsbnNumber());
+////			lBook.setPrice(book.getPrice());
+////			lBook.setLanguage(book.getLanguage());
+////			lBook.setGenre(book.getGenre());
+//			return lBook;
+//		}).flatMap(lBook -> this.bookRepository.save(book));
+//	}
+
 	@PutMapping(value = "/updateBook/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Mono<Book> findById(@PathVariable Integer id, @RequestBody Book book)throws ResourceNotFoundException {
-		return this.bookRepository.findById(id).map(lBook -> {
-			lBook.setTitle(book.getTitle());
-			lBook.setCoverPhotoURL(book.getCoverPhotoURL());
-			lBook.setIsbnNumber(book.getIsbnNumber());
-			lBook.setPrice(book.getPrice());
-			lBook.setLanguage(book.getLanguage());
-			lBook.setGenre(book.getGenre());
-			return lBook;
-		}).flatMap(lBook -> this.bookRepository.save(lBook));
+	public Mono<Book> findById(@PathVariable Integer id, @RequestBody Book book) throws ResourceNotFoundException {
+		Book lBook=Book.updateBuilder(book.title, book.author, book.coverPhotoURL,	book.isbnNumber, book.price, book.language, book.genre);
+		return this.bookRepository.findById(id).map(lBook12->{return lBook;}).flatMap(lBook1 -> this.bookRepository.save(lBook));
+
 	}
 
 	/**
 	 * @param id
 	 * @return
 	 */
-	@DeleteMapping(value = "/deleteBoook/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(value = "/deleteBoook/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public String delete(@PathVariable Integer id) throws ResourceNotFoundException {
-		String response = "Book id "+id+" Deleted...";
+		String response = "Book id " + id + " Deleted...";
 		try {
 			bookRepository.deleteById(id);
 		} catch (Exception e) {
@@ -105,6 +110,5 @@ public class BookResource implements ErrorController {
 	public String getErrorPath() {
 		return ERROR_PATH;
 	}
-	
 
 }

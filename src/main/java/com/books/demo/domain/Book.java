@@ -1,113 +1,70 @@
 package com.books.demo.domain;
 
+import java.io.Serializable;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Table("bookscatalogs")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Book {
+@Builder
+public class Book implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	private Integer id;
 
 	@Column(value = "title")
 	@JsonProperty("title")
-	private String title;
+	public	String title;
 
 	@Column(value = "author")
 	@JsonProperty("author")
-	private String author;
+	public String author;
 
 	@Column(value = "coverPhotoURL")
 	@JsonProperty("coverPhotoURL")
-	private String coverPhotoURL;
+	public String coverPhotoURL;
 
 	@Column(value = "isbnNumber")
 	@JsonProperty("isbnNumber")
-	private Long isbnNumber;
+	public Long isbnNumber;
 
 	@Column(value = "price")
 	@JsonProperty("price")
-	private Double price;
+	public Double price;
 
 	@Column(value = "language")
 	@JsonProperty("language")
-	private String language;
+	public String language;
 
 	@Column(value = "genre")
 	@JsonProperty("genre")
-	private String genre;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
+	public String genre;
+	
+	Book(String title, String author, String coverPhotoURL, Long isbnNumber, Double price, String language,
+			String genre) {
+		super();
 		this.title = title;
-	}
-
-	public String getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(String author) {
 		this.author = author;
-	}
-
-	public String getCoverPhotoURL() {
-		return coverPhotoURL;
-	}
-
-	public void setCoverPhotoURL(String coverPhotoURL) {
 		this.coverPhotoURL = coverPhotoURL;
-	}
-
-	public Long getIsbnNumber() {
-		return isbnNumber;
-	}
-
-	public void setIsbnNumber(Long isbnNumber) {
 		this.isbnNumber = isbnNumber;
-	}
-
-	public Double getPrice() {
-		return price;
-	}
-
-	public void setPrice(Double price) {
 		this.price = price;
-	}
-
-	public String getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(String language) {
 		this.language = language;
-	}
-
-	public String getGenre() {
-		return genre;
-	}
-
-	public void setGenre(String genre) {
 		this.genre = genre;
 	}
-	
+		@Builder
+	    public static Book updateBuilder(String title, String author, String coverPhotoURL, Long isbnNumber, Double price, String language,
+				String genre) {
+	        return new Book(title, author, coverPhotoURL, isbnNumber,price,language,genre);
+	    }
 }
