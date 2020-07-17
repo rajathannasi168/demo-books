@@ -1,0 +1,13 @@
+logging:
+  level:
+    org.springframework.data.r2dbc: info
+    web: debug
+spring:
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306/bookschema?locale=en_US&locale=en_GB
+    username: root
+    password: admin
+server:
+  port: 7073
+  servlet:    context-path: /
+debug: false
