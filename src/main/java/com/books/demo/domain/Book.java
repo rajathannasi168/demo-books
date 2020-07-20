@@ -1,70 +1,50 @@
 package com.books.demo.domain;
 
-import java.io.Serializable;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
+/**
+ * @author rt3
+ *
+ */
 @Table("bookscatalogs")
 @Data
-@Builder
-public class Book implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+@Builder(toBuilder = true)
+@Getter
+public class Book{
 	@Id
 	private Integer id;
 
 	@Column(value = "title")
 	@JsonProperty("title")
-	public	String title;
+	private String title;
 
 	@Column(value = "author")
 	@JsonProperty("author")
-	public String author;
+	private String author;
 
 	@Column(value = "coverPhotoURL")
 	@JsonProperty("coverPhotoURL")
-	public String coverPhotoURL;
+	private String coverPhotoURL;
 
 	@Column(value = "isbnNumber")
 	@JsonProperty("isbnNumber")
-	public Long isbnNumber;
+	private Long isbnNumber;
 
 	@Column(value = "price")
 	@JsonProperty("price")
-	public Double price;
+	private Double price;
 
 	@Column(value = "language")
 	@JsonProperty("language")
-	public String language;
+	private String language;
 
 	@Column(value = "genre")
 	@JsonProperty("genre")
-	public String genre;
-	
-	Book(String title, String author, String coverPhotoURL, Long isbnNumber, Double price, String language,
-			String genre) {
-		super();
-		this.title = title;
-		this.author = author;
-		this.coverPhotoURL = coverPhotoURL;
-		this.isbnNumber = isbnNumber;
-		this.price = price;
-		this.language = language;
-		this.genre = genre;
-	}
-		@Builder
-	    public static Book updateBuilder(String title, String author, String coverPhotoURL, Long isbnNumber, Double price, String language,
-				String genre) {
-	        return new Book(title, author, coverPhotoURL, isbnNumber,price,language,genre);
-	    }
+	private String genre;
 }

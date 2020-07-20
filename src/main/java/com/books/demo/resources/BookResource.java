@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.books.demo.domain.Book;
 import com.books.demo.exception.ResourceNotFoundException;
 import com.books.demo.repository.BookRepository;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -64,28 +65,16 @@ public class BookResource implements ErrorController {
 	 * @return
 	 * @return
 	 */
-//	@PutMapping(value = "/updateBook/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//	public Mono<Book> findById(@PathVariable Integer id, @RequestBody Book book) throws ResourceNotFoundException {
-//		return this.bookRepository.findById(id).map(lBook -> {
-////			lBook.setTitle(book.getTitle());
-////			lBook.setCoverPhotoURL(book.getCoverPhotoURL());
-////			lBook.setIsbnNumber(book.getIsbnNumber());
-////			lBook.setPrice(book.getPrice());
-////			lBook.setLanguage(book.getLanguage());
-////			lBook.setGenre(book.getGenre());
-//			return lBook;
-//		}).flatMap(lBook -> this.bookRepository.save(book));
-//	}
 
 	@PutMapping(value = "/updateBook/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Mono<Book> findById(@PathVariable Integer id, @RequestBody Book book) throws ResourceNotFoundException {
-		Book lBook=Book.updateBuilder(book.title, book.author, book.coverPhotoURL,	book.isbnNumber, book.price, book.language, book.genre);
-		return this.bookRepository.findById(id).map(lBook12->{return lBook;}).flatMap(lBook1 -> this.bookRepository.save(lBook));
-
+		Book lBook = bookRepository.findById(id).block();
+		lBook = lBook.toBuilder().title(book.getTitle()).author(book.getAuthor()).coverPhotoURL(book.getCoverPhotoURL())
+				.isbnNumber(book.getIsbnNumber()).price(book.getPrice()).language(book.getLanguage())
+				.genre(book.getGenre()).build();
+		return this.bookRepository.save(lBook);
 	}
 
-	
-	
 	/**
 	 * @param id
 	 * @return
@@ -97,7 +86,6 @@ public class BookResource implements ErrorController {
 		try {
 			bookRepository.deleteById(id);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return response;

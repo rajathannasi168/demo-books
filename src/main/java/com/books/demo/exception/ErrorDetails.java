@@ -2,6 +2,10 @@ package com.books.demo.exception;
 
 import java.util.Date;
 
+/**
+ * @author rt3
+ *
+ */
 public class ErrorDetails {
 	private Date timestamp;
     private String message;
